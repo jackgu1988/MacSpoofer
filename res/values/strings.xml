@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">MacSpoofer</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="ok">OK</string>
+    <string name="random">Random</string>
+    <string name="iface">Interface</string>
+    <string name="mac">New MAC address</string>
+    <string name="current_mac">Current MAC:</string>
+
+</resources>
