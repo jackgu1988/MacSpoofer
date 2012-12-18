@@ -21,6 +21,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import com.stericson.RootTools.RootTools;
+
 /**
  * 
  * @author jack gurulian
@@ -33,17 +35,6 @@ public class CmdRunner {
 	private InputStream stdout;
 	private static final int BUFF_LEN = 64;
 	private byte[] buffer = new byte[BUFF_LEN];
-
-	/**
-	 * Get superuser access
-	 */
-	public void getRoot() {
-		try {
-			p = Runtime.getRuntime().exec(new String[] { "su" });
-			stdin = new DataOutputStream(p.getOutputStream());
-		} catch (IOException e) {
-		}
-	}
 
 	/**
 	 * Changes the mac address for a given interface
@@ -66,6 +57,32 @@ public class CmdRunner {
 	}
 
 	/**
+	 * Checks if the user has busybox installed
+	 * 
+	 * @return true if busybox is present
+	 */
+	public boolean checkBusybox() {
+
+		if (RootTools.isBusyboxAvailable())
+			return true;
+		else
+			return false;
+	}
+
+	/**
+	 * Checks if the user has a rooted device
+	 * 
+	 * @return true if root is present
+	 */
+	public boolean checkRoot() {
+
+		if (RootTools.isRootAvailable())
+			return true;
+		else
+			return false;
+	}
+
+	/**
 	 * Returns the current mac address
 	 * 
 	 * @param iface
@@ -77,7 +94,7 @@ public class CmdRunner {
 
 		String mac = "";
 
-		String command = "ip link show " + iface
+		String command = "busybox ip link show " + iface
 				+ " | sed -n 2p | tr -s ' ' | cut -d ' ' -f3";
 
 		try {
@@ -95,6 +112,17 @@ public class CmdRunner {
 		}
 
 		return mac;
+	}
+
+	/**
+	 * Get superuser access
+	 */
+	public void getRoot() {
+		try {
+			p = Runtime.getRuntime().exec(new String[] { "su" });
+			stdin = new DataOutputStream(p.getOutputStream());
+		} catch (IOException e) {
+		}
 	}
 
 }
