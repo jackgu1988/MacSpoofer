@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Random;
 
+import android.graphics.Color;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.app.Activity;
@@ -67,6 +68,7 @@ public class Spoofer extends Activity {
         checkBox2 = (CheckBox) findViewById(R.id.checkBox2);
 
         checkBox2.setEnabled(false);
+        checkBox2.setTextColor(Color.GRAY);
 
         if (!cmd.checkRoot())
             alert("You do not seem to have a rooted device.\n Exiting...");
@@ -214,10 +216,13 @@ public class Spoofer extends Activity {
     }
 
     public void onClickCheck(View v) {
-        if (checkBox.isChecked())
+        if (checkBox.isChecked()) {
             checkBox2.setEnabled(true);
-        else
+            checkBox2.setTextColor(Color.WHITE);
+        } else {
             checkBox2.setEnabled(false);
+            checkBox2.setTextColor(Color.GRAY);
+        }
     }
 
 }

@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    tools:context=".Spoofer" >
+    tools:context=".Spoofer"
+    android:background="#000000">
 
     <Button
         android:id="@+id/OK"
@@ -35,7 +36,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:text="@string/iface" />
+        android:text="@string/iface"
+        android:textColor="#dddddd" />
 
     <EditText
         android:id="@+id/editText1"
@@ -53,7 +55,8 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:text="@string/current_mac"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="#ffffff" />
 
     <Button
         android:id="@+id/Random"
@@ -69,7 +72,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/iface_selector"
-        android:text="@string/mac" />
+        android:text="@string/mac"
+        android:textColor="#dddddd" />
 
     <CheckBox
         android:layout_width="wrap_content"
@@ -78,7 +82,8 @@
         android:id="@+id/checkBox2"
         android:checked="false"
         android:layout_below="@+id/checkBox"
-        android:layout_alignParentLeft="true" />
+        android:layout_alignParentLeft="true"
+        android:textColor="#ffffff" />
 
     <CheckBox
         android:layout_width="wrap_content"
@@ -88,7 +93,8 @@
         android:layout_below="@+id/Error"
         android:layout_alignParentLeft="true"
         android:checked="false"
-        android:onClick="onClickCheck" />
+        android:onClick="onClickCheck"
+        android:textColor="#ffffff" />
 
     <Button
         android:layout_width="wrap_content"
@@ -105,6 +111,7 @@
         android:text="@string/advanced"
         android:id="@+id/textView"
         android:layout_above="@+id/checkBox"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:textColor="#dddddd" />
 
 </RelativeLayout>
