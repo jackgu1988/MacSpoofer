@@ -74,7 +74,7 @@
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/persistant"
+        android:text="@string/persistent"
         android:id="@+id/checkBox"
         android:checked="false"
         android:layout_below="@+id/checkBox2"
