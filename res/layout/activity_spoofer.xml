@@ -71,4 +71,39 @@
         android:layout_below="@+id/iface_selector"
         android:text="@string/mac" />
 
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/persistant"
+        android:id="@+id/checkBox"
+        android:checked="false"
+        android:layout_below="@+id/checkBox2"
+        android:layout_alignParentLeft="true" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/locked"
+        android:id="@+id/checkBox2"
+        android:layout_below="@+id/Error"
+        android:layout_alignParentLeft="true"
+        android:checked="false" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/restore"
+        android:id="@+id/button"
+        android:layout_below="@+id/checkBox"
+        android:layout_alignParentLeft="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/advanced"
+        android:id="@+id/textView"
+        android:layout_above="@+id/checkBox2"
+        android:layout_centerHorizontal="true" />
+
 </RelativeLayout>
