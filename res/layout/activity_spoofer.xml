@@ -75,26 +75,27 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/persistent"
-        android:id="@+id/checkBox"
+        android:id="@+id/checkBox2"
         android:checked="false"
-        android:layout_below="@+id/checkBox2"
+        android:layout_below="@+id/checkBox"
         android:layout_alignParentLeft="true" />
 
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/locked"
-        android:id="@+id/checkBox2"
+        android:id="@+id/checkBox"
         android:layout_below="@+id/Error"
         android:layout_alignParentLeft="true"
-        android:checked="false" />
+        android:checked="false"
+        android:onClick="onClickCheck" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/restore"
         android:id="@+id/button"
-        android:layout_below="@+id/checkBox"
+        android:layout_below="@+id/checkBox2"
         android:layout_alignParentLeft="true" />
 
     <TextView
@@ -103,7 +104,7 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="@string/advanced"
         android:id="@+id/textView"
-        android:layout_above="@+id/checkBox2"
+        android:layout_above="@+id/checkBox"
         android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
