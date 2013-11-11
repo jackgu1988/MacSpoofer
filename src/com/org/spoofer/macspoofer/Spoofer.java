@@ -124,10 +124,6 @@ public class Spoofer extends Activity {
 
             });
 
-            current_mac.setText("Current MAC: "
-                    + cmd.getCurrentMac(String.valueOf(iface_list
-                    .getSelectedItem())));
-
             final Button buttonRnd = (Button) findViewById(R.id.Random);
             buttonRnd.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
@@ -203,12 +199,19 @@ public class Spoofer extends Activity {
         WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
         wifi.disconnect();
 
-        cmd.changeMac(macField.getText().toString(),
+        String textField = macField.getText().toString();
+
+        cmd.changeMac(textField,
                 String.valueOf(iface_list.getSelectedItem()));
 
+        String currentMac = cmd.getCurrentMac(String.valueOf(iface_list
+                .getSelectedItem()));
+
         current_mac.setText("Current MAC: "
-                + cmd.getCurrentMac(String.valueOf(iface_list
-                .getSelectedItem())));
+                + currentMac);
+
+        if (!currentMac.trim().equals(textField.trim()))
+            simpleAlert("The MAC address failed to change! Please try some different address.");
     }
 
     private void rndNum() {
