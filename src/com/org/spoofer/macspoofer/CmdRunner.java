@@ -17,11 +17,11 @@
 
 package com.org.spoofer.macspoofer;
 
+import com.stericson.RootTools.RootTools;
+
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
-//import com.stericson.RootTools.RootTools;
 
 /**
  * @author jack gurulian
@@ -61,10 +61,10 @@ public class CmdRunner {
      */
     public boolean checkBusybox() {
 
-        //if (RootTools.isBusyboxAvailable())
-        return true;
-        //else
-        //	return false;
+        if (RootTools.isBusyboxAvailable())
+            return true;
+        else
+            return false;
     }
 
     /**
@@ -74,10 +74,23 @@ public class CmdRunner {
      */
     public boolean checkRoot() {
 
-        //	if (RootTools.isRootAvailable())
-        return true;
-        //	else
-        //		return false;
+        if (RootTools.isRootAvailable())
+            return true;
+        else
+            return false;
+    }
+
+    /**
+     * Checks if root access is given
+     *
+     * @return true if access is given
+     */
+    public boolean checkAccess() {
+
+        if (RootTools.isAccessGiven())
+            return true;
+        else
+            return false;
     }
 
     /**

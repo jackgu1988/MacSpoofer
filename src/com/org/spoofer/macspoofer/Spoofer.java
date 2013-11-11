@@ -63,20 +63,23 @@ public class Spoofer extends Activity {
         final TextView error = (TextView) findViewById(R.id.Error);
         final TextView current_mac = (TextView) findViewById(R.id.current_mac);
 
-        checkBox = (CheckBox) findViewById(R.id.checkBox);
-        checkBox2 = (CheckBox) findViewById(R.id.checkBox2);
-
-        checkBox2.setEnabled(false);
-        checkBox2.setTextColor(Color.GRAY);
-
         if (!cmd.checkRoot())
             alert("You do not seem to have a rooted device.\n Exiting...");
 
         if (!cmd.checkBusybox())
             alert("You do not seem to have busybox installed.\n Exiting...");
 
-        if (cmd.checkRoot()) {
+        if (!cmd.checkAccess())
+            alert("You seem to have denied root access.\n Exiting...");
+
+        if (cmd.checkRoot() && cmd.checkAccess()) {
             cmd.getRoot();
+
+            checkBox = (CheckBox) findViewById(R.id.checkBox);
+            checkBox2 = (CheckBox) findViewById(R.id.checkBox2);
+
+            checkBox2.setEnabled(false);
+            checkBox2.setTextColor(Color.GRAY);
 
             try {
                 for (Enumeration<NetworkInterface> en = NetworkInterface
