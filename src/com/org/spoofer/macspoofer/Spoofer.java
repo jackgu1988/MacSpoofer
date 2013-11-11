@@ -24,8 +24,6 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -53,26 +51,29 @@ public class Spoofer extends Activity {
     private ArrayList<String> ifaces = new ArrayList<String>();
     private CheckBox checkBox;
     private CheckBox checkBox2;
+    private TextView method;
+    private EditText macField;
+    private Spinner iface_list;
+    private TextView current_mac;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_spoofer);
 
-        final EditText macField = (EditText) findViewById(R.id.editText1);
-        final TextView error = (TextView) findViewById(R.id.Error);
-        final TextView current_mac = (TextView) findViewById(R.id.current_mac);
+        macField = (EditText) findViewById(R.id.editText1);
+        current_mac = (TextView) findViewById(R.id.current_mac);
 
         if (!cmd.checkRoot())
             alert("You do not seem to have a rooted device.\n Exiting...");
 
-        if (!cmd.checkBusybox())
+        else if (!cmd.checkBusybox())
             alert("You do not seem to have busybox installed.\n Exiting...");
 
-        if (!cmd.checkAccess())
+        else if (!cmd.checkAccess())
             alert("You seem to have denied root access.\n Exiting...");
 
-        if (cmd.checkRoot() && cmd.checkAccess()) {
+        else {
             cmd.getRoot();
 
             checkBox = (CheckBox) findViewById(R.id.checkBox);
@@ -91,7 +92,7 @@ public class Spoofer extends Activity {
             } catch (SocketException e) {
             }
 
-            final Spinner iface_list = (Spinner) findViewById(R.id.iface_selector);
+            iface_list = (Spinner) findViewById(R.id.iface_selector);
 
             ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
                     android.R.layout.simple_spinner_item, ifaces);
@@ -125,69 +126,10 @@ public class Spoofer extends Activity {
                     + cmd.getCurrentMac(String.valueOf(iface_list
                     .getSelectedItem())));
 
-            macField.addTextChangedListener(new TextWatcher() {
-
-                @Override
-                public void onTextChanged(CharSequence s, int start,
-                                          int before, int count) {
-
-                    String pattern = "^([0-9A-Fa-f]{2}[:]){5}([0-9A-Fa-f]{2})$";
-
-                    if (!macField.getText().toString().matches(pattern)) {
-                        error.setText("Wrong format!");
-                        correctMac = false;
-                    } else {
-                        error.setText("");
-                        correctMac = true;
-                    }
-                }
-
-                @Override
-                public void beforeTextChanged(CharSequence s, int start,
-                                              int count, int after) {
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-
-                }
-            });
-
-            final Button buttonOK = (Button) findViewById(R.id.OK);
-            buttonOK.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    if (correctMac) {
-                        WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-                        wifi.disconnect();
-
-                        cmd.changeMac(macField.getText().toString(),
-                                String.valueOf(iface_list.getSelectedItem()));
-
-                        current_mac.setText("Current MAC: "
-                                + cmd.getCurrentMac(String.valueOf(iface_list
-                                .getSelectedItem())));
-                    }
-                }
-            });
-
             final Button buttonRnd = (Button) findViewById(R.id.Random);
             buttonRnd.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    Random rand = new Random();
-                    String result = "";
-                    for (int i = 0; i < 6; i++) {
-                        int myRandomNumber = rand.nextInt(0xff) + 0x00;
-
-                        if (myRandomNumber <= 15)
-                            result += "0";
-
-                        result += Integer.toHexString(myRandomNumber);
-
-                        if (i < 5)
-                            result += ":";
-                    }
-                    macField.setText(result);
+                    rndNum();
                 }
             });
         }
@@ -211,6 +153,24 @@ public class Spoofer extends Activity {
                 }).show();
     }
 
+    /**
+     * Alerts for simple errorsthat do not require the app to be closed with popup
+     *
+     * @param msg the message to be displayed
+     */
+    private void simpleAlert(String msg) {
+        new AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_dialog_alert).setTitle("Error")
+                .setMessage(msg)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+
+                }).show();
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_spoofer, menu);
@@ -225,6 +185,45 @@ public class Spoofer extends Activity {
             checkBox2.setEnabled(false);
             checkBox2.setTextColor(Color.GRAY);
         }
+    }
+
+    public void checkInput(View v) {
+        String pattern = "^([0-9A-Fa-f]{2}[:]){5}([0-9A-Fa-f]{2})$";
+
+        if (!macField.getText().toString().matches(pattern)) {
+            simpleAlert("Wrong format provided!");
+        } else {
+            changeMac();
+        }
+    }
+
+    private void changeMac() {
+        WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        wifi.disconnect();
+
+        cmd.changeMac(macField.getText().toString(),
+                String.valueOf(iface_list.getSelectedItem()));
+
+        current_mac.setText("Current MAC: "
+                + cmd.getCurrentMac(String.valueOf(iface_list
+                .getSelectedItem())));
+    }
+
+    private void rndNum() {
+        Random rand = new Random();
+        String result = "";
+        for (int i = 0; i < 6; i++) {
+            int myRandomNumber = rand.nextInt(0xff) + 0x00;
+
+            if (myRandomNumber <= 15)
+                result += "0";
+
+            result += Integer.toHexString(myRandomNumber);
+
+            if (i < 5)
+                result += ":";
+        }
+        macField.setText(result);
     }
 
 }
