@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2012 Iakovos Gurulian
+ * Copyright (C) 2012-2013 Iakovos Gurulian
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -55,6 +55,7 @@ public class Spoofer extends Activity {
     private EditText macField;
     private Spinner iface_list;
     private TextView current_mac;
+    private Button randomBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +64,7 @@ public class Spoofer extends Activity {
 
         macField = (EditText) findViewById(R.id.editText1);
         current_mac = (TextView) findViewById(R.id.current_mac);
+        randomBtn = (Button) findViewById(R.id.Random);
 
         if (!cmd.checkRoot())
             alert("You do not seem to have a rooted device.\n Exiting...");

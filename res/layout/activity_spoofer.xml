@@ -104,17 +104,8 @@
         android:text="@string/advanced"
         android:id="@+id/textView"
         android:textColor="#dddddd"
-        android:layout_below="@+id/Random"
+        android:layout_below="@+id/space"
         android:layout_centerHorizontal="true" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView"
-        android:layout_below="@+id/new_mac"
-        android:layout_alignParentRight="true"
-        android:background="@drawable/macspoofer"
-        android:layout_toRightOf="@+id/checkBox2" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -125,5 +116,28 @@
         android:layout_above="@+id/current_mac"
         android:layout_alignParentLeft="true"
         android:textColor="#ffffff" />
+
+    <View
+        android:id="@+id/space"
+        android:layout_width="fill_parent"
+        android:layout_height="15dip"
+        android:layout_below="@+id/Random" />
+
+    <View
+        android:id="@+id/separator"
+        android:background="#aaaaaa"
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:layout_below="@+id/textView" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:background="@drawable/macspoofer"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@+id/checkBox2"
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>
