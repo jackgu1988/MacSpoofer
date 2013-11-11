@@ -17,10 +17,10 @@
         android:id="@+id/Error"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/OK"
         android:text=""
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_below="@+id/OK"
+        android:layout_alignParentLeft="true" />
 
     <Spinner
         android:id="@+id/iface_selector"
@@ -46,17 +46,18 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/new_mac"
         android:ems="10"
-        android:inputType="text" />
+        android:inputType="text"
+        android:hint="@string/hint" />
 
     <TextView
         android:id="@+id/current_mac"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
         android:text="@string/current_mac"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="#ffffff" />
+        android:textColor="#ffffff"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true" />
 
     <Button
         android:id="@+id/Random"
@@ -90,11 +91,11 @@
         android:layout_height="wrap_content"
         android:text="@string/locked"
         android:id="@+id/checkBox"
-        android:layout_below="@+id/Error"
-        android:layout_alignParentLeft="true"
         android:checked="false"
         android:onClick="onClickCheck"
-        android:textColor="#ffffff" />
+        android:textColor="#ffffff"
+        android:layout_below="@+id/textView"
+        android:layout_toRightOf="@+id/Error" />
 
     <Button
         android:layout_width="wrap_content"
@@ -110,8 +111,27 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="@string/advanced"
         android:id="@+id/textView"
-        android:layout_above="@+id/checkBox"
-        android:layout_centerHorizontal="true"
-        android:textColor="#dddddd" />
+        android:textColor="#dddddd"
+        android:layout_below="@+id/Error"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:layout_below="@+id/new_mac"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/macspoofer"
+        android:layout_toRightOf="@+id/checkBox2" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/method"
+        android:id="@+id/textView2"
+        android:layout_above="@+id/current_mac"
+        android:layout_alignParentLeft="true"
+        android:textColor="#ffffff" />
 
 </RelativeLayout>

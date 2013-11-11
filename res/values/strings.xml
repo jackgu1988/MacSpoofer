@@ -13,5 +13,7 @@
     <string name="restore">Restore Defaults</string>
     <string name="locked">Locked Wi-Fi compatibility\n<font fgcolor="#ffff0000"><i>(use at your own risk)</i></font></string>
     <string name="advanced">Advanced</string>
+    <string name="hint">ex 00:11:22:33:44:55</string>
+    <string name="method">Method used:</string>
 
 </resources>
