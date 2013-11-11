@@ -19,11 +19,16 @@ package com.org.spoofer.macspoofer;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.text.Html;
+import android.view.ContextThemeWrapper;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -56,6 +61,9 @@ public class Spoofer extends Activity {
     private Spinner iface_list;
     private TextView current_mac;
     private Button randomBtn;
+    private CheckBox understand;
+    private AlertDialog.Builder warningDialog;
+    private AlertDialog warnD;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,7 +160,7 @@ public class Spoofer extends Activity {
     }
 
     /**
-     * Alerts for simple errorsthat do not require the app to be closed with popup
+     * Alerts for simple errors that do not require the app to be closed with popup
      *
      * @param msg the message to be displayed
      */
@@ -177,8 +185,7 @@ public class Spoofer extends Activity {
 
     public void onClickCheck(View v) {
         if (checkBox.isChecked()) {
-            checkBox2.setEnabled(true);
-            checkBox2.setTextColor(Color.WHITE);
+            warningDialogue(getString(R.string.warningMsg));
         } else {
             checkBox2.setEnabled(false);
             checkBox2.setTextColor(Color.GRAY);
@@ -211,7 +218,7 @@ public class Spoofer extends Activity {
                 + currentMac);
 
         if (!currentMac.trim().equals(textField.trim()))
-            simpleAlert("The MAC address failed to change! Please try some different address.");
+            simpleAlert(getMACAddress() + " The MAC address failed to change! Please try some different address.");
     }
 
     private void rndNum() {
@@ -229,6 +236,64 @@ public class Spoofer extends Activity {
                 result += ":";
         }
         macField.setText(result);
+    }
+
+    public String getMACAddress() {
+        WifiManager wifiMan = (WifiManager) this.getSystemService(
+                Context.WIFI_SERVICE);
+        WifiInfo wifiInf = wifiMan.getConnectionInfo();
+        String macAddr = wifiInf.getMacAddress();
+        return macAddr;
+    }
+
+    public void warningDialogue(String msg) {
+
+        warningDialog = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.WarningDialog));
+        LayoutInflater warn = LayoutInflater.from(this);
+        View warnLayout = warn.inflate(R.layout.checkbox, null);
+        understand = (CheckBox) warnLayout.findViewById(R.id.understand);
+
+        warningDialog
+                .setView(warnLayout)
+                .setIcon(android.R.drawable.ic_dialog_alert).setTitle("Warning!!!")
+                .setMessage(Html.fromHtml(msg))
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (understand.isChecked()) {
+                            checkBox2.setEnabled(true);
+                            checkBox2.setTextColor(Color.WHITE);
+                        } else
+                            checkBox.setChecked(false);
+                        return;
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        checkBox.setChecked(false);
+                        return;
+                    }
+                });
+
+        warnD = warningDialog.create();
+        warnD.setOnShowListener(new DialogInterface.OnShowListener() {
+
+            @Override
+            public void onShow(DialogInterface dialog) {
+                warnD.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+            }
+        });
+        warnD.setCancelable(false);
+
+        warnD.show();
+    }
+
+    public void enableOK(View v) {
+        if (!understand.isChecked())
+            warnD.getButton(Dialog.BUTTON_POSITIVE).setEnabled(false);
+        else
+            warnD.getButton(Dialog.BUTTON_POSITIVE).setEnabled(true);
     }
 
 }
