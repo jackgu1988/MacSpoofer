@@ -218,7 +218,7 @@ public class Spoofer extends Activity {
                 + currentMac);
 
         if (!currentMac.trim().equals(textField.trim()))
-            simpleAlert(getMACAddress() + " The MAC address failed to change! Please try some different address.");
+            simpleAlert("The MAC address failed to change! Please try some different address.");
     }
 
     private void rndNum() {
