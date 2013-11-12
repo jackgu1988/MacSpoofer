@@ -64,6 +64,7 @@ public class Spoofer extends Activity {
     private CheckBox understand;
     private AlertDialog.Builder warningDialog;
     private AlertDialog warnD;
+    private AlertDialog.Builder resetDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -294,6 +295,27 @@ public class Spoofer extends Activity {
             warnD.getButton(Dialog.BUTTON_POSITIVE).setEnabled(false);
         else
             warnD.getButton(Dialog.BUTTON_POSITIVE).setEnabled(true);
+    }
+
+    public void resetDefaults(View v) {
+
+        resetDialog = new AlertDialog.Builder(this);
+
+        resetDialog
+                .setIcon(android.R.drawable.ic_dialog_alert).setTitle("Warning!!!")
+                .setMessage(getString(R.string.restore_defaults))
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // TODO
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        return;
+                    }
+                }).show();
     }
 
 }

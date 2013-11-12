@@ -94,8 +94,9 @@
         android:layout_height="wrap_content"
         android:text="@string/restore"
         android:id="@+id/button"
-        android:layout_below="@+id/checkBox2"
-        android:layout_alignParentLeft="true" />
+        android:layout_above="@+id/current_mac"
+        android:layout_alignParentLeft="true"
+        android:onClick="resetDefaults" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -106,16 +107,6 @@
         android:textColor="#dddddd"
         android:layout_below="@+id/space"
         android:layout_centerHorizontal="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="@string/method"
-        android:id="@+id/method"
-        android:layout_above="@+id/current_mac"
-        android:layout_alignParentLeft="true"
-        android:textColor="#ffffff" />
 
     <View
         android:id="@+id/space"
