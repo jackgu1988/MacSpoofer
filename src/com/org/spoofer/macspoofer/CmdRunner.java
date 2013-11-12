@@ -17,6 +17,9 @@
 
 package com.org.spoofer.macspoofer;
 
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
+
 import com.stericson.RootTools.RootTools;
 
 import java.io.DataOutputStream;
@@ -34,6 +37,7 @@ public class CmdRunner {
     private DataOutputStream stdin;
     private InputStream stdout;
     private byte[] buffer = new byte[BUFF_LEN];
+    private WifiManager wifi;
 
     /**
      * Changes the mac address for a given interface
@@ -43,7 +47,9 @@ public class CmdRunner {
      * @param methodUsed 0 if ifconfig method is used, 1 if MAC file method
      * @param permanent  true if the original MAC is not restored after restarting WiFi
      */
-    public void changeMac(String newMac, String iface, int methodUsed, boolean permanent) {
+    public void changeMac(String newMac, String iface, int methodUsed, boolean permanent, WifiManager wifi) {
+
+        this.wifi = wifi;
 
         if (methodUsed == 0) {
             String command = "busybox ifconfig " + iface + " up; busybox ifconfig "
@@ -55,13 +61,26 @@ public class CmdRunner {
                 e.printStackTrace();
             }
         } else if (methodUsed == 1) {
-            if (!permanent) {
-
-            } else {
-
+            String macFile = getMacDir();
+            if (macFile != null) {
+                wifi.setWifiEnabled(false);
+                changeMac(newMac, macFile);
+                wifi.setWifiEnabled(true);
+                if (!permanent)
+                    restoreMac();
             }
         }
 
+    }
+
+    private void changeMac(String newMac, String file) {
+        String command = "echo " + newMac.trim() + " > " + file;
+
+        try {
+            stdin.writeBytes(command + "\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -78,6 +97,11 @@ public class CmdRunner {
                 return filenames[i];
         }
         return null;
+    }
+
+    // TODO
+    public void checkWlanUp() {
+        wifi.getWifiState();
     }
 
     /**

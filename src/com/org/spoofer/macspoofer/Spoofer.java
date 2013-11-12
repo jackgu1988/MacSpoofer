@@ -70,11 +70,14 @@ public class Spoofer extends Activity {
     private Button restoreBtn;
     private AlertDialog.Builder aboutDialog;
     private AlertDialog.Builder tipDialog;
+    private WifiManager wifi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_spoofer);
+
+        wifi = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
 
         macField = (EditText) findViewById(R.id.editText1);
         current_mac = (TextView) findViewById(R.id.current_mac);
@@ -279,8 +282,17 @@ public class Spoofer extends Activity {
 
         String textField = macField.getText().toString();
 
-        cmd.changeMac(textField,
-                String.valueOf(iface_list.getSelectedItem()), 0, false);
+        if (!checkBox.isChecked())
+            cmd.changeMac(textField,
+                    String.valueOf(iface_list.getSelectedItem()), 0, false, wifi);
+        else {
+            if (!checkBox2.isChecked())
+                cmd.changeMac(textField,
+                        "wlan0", 1, false, wifi);
+            else
+                cmd.changeMac(textField,
+                        "wlan0", 1, true, wifi);
+        }
 
         String currentMac = cmd.getCurrentMac(String.valueOf(iface_list
                 .getSelectedItem()));
@@ -381,7 +393,11 @@ public class Spoofer extends Activity {
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // TODO
+                        if (cmd.getMacDir() != null) {
+                            wifi.setWifiEnabled(false);
+                            cmd.restoreMac();
+                            wifi.setWifiEnabled(true);
+                        }
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

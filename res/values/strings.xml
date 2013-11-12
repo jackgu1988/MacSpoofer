@@ -17,7 +17,7 @@
     <string name="method">Method used:</string>
     <string name="warningMsg">Before proceeding it is HIGHLY RECOMMENDED that you write down the REAL MAC ADDRESS of the interface. The application will try to remember it, but there is NO GUARANTEE THAT IT WILL!</string>
     <string name="understand">I have written down my <font fgcolor="#ffff0000"><i>real</i></font> MAC Address</string>
-    <string name="restore_defaults">Reset all MAC addresses to the default values?</string>
+    <string name="restore_defaults">Reset MAC address to the default value?</string>
     <string name="menu_credits">Credits</string>
     <string name="menu_legal">License</string>
     <string name="action_tip">Tips</string>
