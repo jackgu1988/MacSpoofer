@@ -21,5 +21,6 @@
     <string name="menu_credits">Credits</string>
     <string name="menu_legal">License</string>
     <string name="action_tip">Tips</string>
+    <string name="no_compat">This method is not compatible with your device (either wlan0 interface is not available or your device is not supported yet).</string>
 
 </resources>

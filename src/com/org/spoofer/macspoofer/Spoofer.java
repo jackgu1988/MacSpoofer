@@ -92,6 +92,8 @@ public class Spoofer extends Activity {
         else {
             cmd.getRoot();
 
+            cmd.saveMac();
+
             checkBox = (CheckBox) findViewById(R.id.checkBox);
             checkBox2 = (CheckBox) findViewById(R.id.checkBox2);
 
@@ -119,12 +121,7 @@ public class Spoofer extends Activity {
                     .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             iface_list.setAdapter(dataAdapter);
 
-            for (int i = 0; i < ifaces.size(); i++) {
-                // Since wlan0 is a common name for the wireless interface
-                if (ifaces.get(i).equals("wlan0")) {
-                    iface_list.setSelection(i);
-                }
-            }
+            checkWlan();
 
             iface_list.setOnItemSelectedListener(new OnItemSelectedListener() {
                 @Override
@@ -148,6 +145,20 @@ public class Spoofer extends Activity {
                 }
             });
         }
+    }
+
+    private boolean checkWlan() {
+        boolean exists = false;
+
+        for (int i = 0; i < ifaces.size(); i++) {
+            // Since wlan0 is a common name for the wireless interface
+            if (ifaces.get(i).equals("wlan0")) {
+                iface_list.setSelection(i);
+                exists = true;
+            }
+        }
+
+        return exists;
     }
 
     /**
@@ -224,12 +235,32 @@ public class Spoofer extends Activity {
 
     public void onClickCheck(View v) {
         if (checkBox.isChecked()) {
-            warningDialogue(getString(R.string.warningMsg));
+            if (checkWlan() && cmd.getMacDir() != null) {
+                warningDialogue(getString(R.string.warningMsg));
+                iface_list.setEnabled(false);
+            } else
+                noWlanDialog();
         } else {
             checkBox2.setEnabled(false);
             checkBox2.setTextColor(Color.GRAY);
             restoreBtn.setEnabled(false);
+            iface_list.setEnabled(true);
         }
+    }
+
+    private void noWlanDialog() {
+
+        AlertDialog.Builder noWlan = new AlertDialog.Builder(this);
+
+        noWlan
+                .setIcon(android.R.drawable.ic_dialog_alert).setTitle("Error!")
+                .setMessage(getString(R.string.no_compat))
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        checkBox.setChecked(false);
+                    }
+                }).show();
     }
 
     public void checkInput(View v) {
@@ -249,7 +280,7 @@ public class Spoofer extends Activity {
         String textField = macField.getText().toString();
 
         cmd.changeMac(textField,
-                String.valueOf(iface_list.getSelectedItem()));
+                String.valueOf(iface_list.getSelectedItem()), 0, false);
 
         String currentMac = cmd.getCurrentMac(String.valueOf(iface_list
                 .getSelectedItem()));

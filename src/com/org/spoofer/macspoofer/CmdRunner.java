@@ -20,6 +20,7 @@ package com.org.spoofer.macspoofer;
 import com.stericson.RootTools.RootTools;
 
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -28,30 +29,96 @@ import java.io.InputStream;
  */
 public class CmdRunner {
 
+    private static final int BUFF_LEN = 64;
     private Process p;
     private DataOutputStream stdin;
     private InputStream stdout;
-    private static final int BUFF_LEN = 64;
     private byte[] buffer = new byte[BUFF_LEN];
 
     /**
      * Changes the mac address for a given interface
      *
-     * @param newMac the new mac address
-     * @param iface  the interface
+     * @param newMac     the new mac address
+     * @param iface      the interface
+     * @param methodUsed 0 if ifconfig method is used, 1 if MAC file method
+     * @param permanent  true if the original MAC is not restored after restarting WiFi
      */
-    public void changeMac(String newMac, String iface) {
+    public void changeMac(String newMac, String iface, int methodUsed, boolean permanent) {
 
-        String command = "busybox ifconfig " + iface + " up; busybox ifconfig "
-                + iface + " hw ether " + newMac;
+        if (methodUsed == 0) {
+            String command = "busybox ifconfig " + iface + " up; busybox ifconfig "
+                    + iface + " hw ether " + newMac;
 
+            try {
+                stdin.writeBytes(command + "\n");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else if (methodUsed == 1) {
+            if (!permanent) {
 
-        try {
-            stdin.writeBytes(command + "\n");
-        } catch (IOException e) {
-            e.printStackTrace();
+            } else {
+
+            }
         }
 
+    }
+
+    /**
+     * Looks for files that may contain the MAC address and if they exist they are returned
+     *
+     * @return the directory where the MAC address is at or null if not found
+     */
+    public String getMacDir() {
+        String[] filenames = {"/efs/wifi/.mac.info"};
+
+        for (int i = 0; i < filenames.length; i++) {
+            File file = new File(filenames[i]);
+            if (file.exists())
+                return filenames[i];
+        }
+        return null;
+    }
+
+    /**
+     * Keeps a backup of the MAC address the first time the program runs
+     * <p/>
+     * The file is stored as a .bak file in the directory where
+     * the original file is at, so that it can be restored even
+     * if the user uninstalls the application or clears cache.
+     * Not 100% safe, but as safe as it can be.
+     */
+    public void saveMac() {
+        String fileName = getMacDir();
+        String fileBak = fileName + ".bak";
+
+        if (fileName != null) {
+            File file = new File(fileBak);
+            if (!file.exists()) {
+                String command = "cp " + fileName + " " + fileBak;
+
+                try {
+                    stdin.writeBytes(command + "\n");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public void restoreMac() {
+        String fileName = getMacDir();
+        String fileBak = fileName + ".bak";
+
+        if (fileName != null) {
+            String command = "cp " + fileBak + " " + fileName;
+
+            try {
+                stdin.writeBytes(command + "\n");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
