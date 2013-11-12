@@ -68,6 +68,16 @@
         android:text="@string/mac"
         android:textColor="#dddddd" />
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView2"
+        android:layout_below="@+id/separator"
+        android:layout_alignParentLeft="true"
+        android:layout_alignBottom="@+id/button"
+        android:layout_alignParentRight="true"
+        android:background="#111111" />
+
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -129,6 +139,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_toRightOf="@+id/checkBox2"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true"
+        android:alpha=".60" />
 
 </RelativeLayout>
