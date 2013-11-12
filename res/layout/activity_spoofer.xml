@@ -76,7 +76,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignBottom="@+id/button"
         android:layout_alignParentRight="true"
-        android:background="#111111" />
+        android:background="#101010" />
 
     <CheckBox
         android:layout_width="wrap_content"
