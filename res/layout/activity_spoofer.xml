@@ -94,9 +94,9 @@
         android:layout_height="wrap_content"
         android:text="@string/restore"
         android:id="@+id/button"
-        android:layout_above="@+id/current_mac"
-        android:layout_alignParentLeft="true"
-        android:onClick="resetDefaults" />
+        android:onClick="resetDefaults"
+        android:layout_below="@+id/checkBox2"
+        android:layout_alignParentLeft="true" />
 
     <TextView
         android:layout_width="wrap_content"

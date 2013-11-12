@@ -65,6 +65,7 @@ public class Spoofer extends Activity {
     private AlertDialog.Builder warningDialog;
     private AlertDialog warnD;
     private AlertDialog.Builder resetDialog;
+    private Button restoreBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +93,9 @@ public class Spoofer extends Activity {
 
             checkBox2.setEnabled(false);
             checkBox2.setTextColor(Color.GRAY);
+
+            restoreBtn = (Button) findViewById(R.id.button);
+            restoreBtn.setEnabled(false);
 
             try {
                 for (Enumeration<NetworkInterface> en = NetworkInterface
@@ -190,6 +194,7 @@ public class Spoofer extends Activity {
         } else {
             checkBox2.setEnabled(false);
             checkBox2.setTextColor(Color.GRAY);
+            restoreBtn.setEnabled(false);
         }
     }
 
@@ -264,8 +269,11 @@ public class Spoofer extends Activity {
                         if (understand.isChecked()) {
                             checkBox2.setEnabled(true);
                             checkBox2.setTextColor(Color.WHITE);
-                        } else
+                            restoreBtn.setEnabled(true);
+                        } else {
                             checkBox.setChecked(false);
+                            restoreBtn.setEnabled(false);
+                        }
                         return;
                     }
                 })
@@ -273,6 +281,7 @@ public class Spoofer extends Activity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         checkBox.setChecked(false);
+                        restoreBtn.setEnabled(false);
                         return;
                     }
                 });
@@ -302,7 +311,7 @@ public class Spoofer extends Activity {
         resetDialog = new AlertDialog.Builder(this);
 
         resetDialog
-                .setIcon(android.R.drawable.ic_dialog_alert).setTitle("Warning!!!")
+                .setIcon(android.R.drawable.ic_dialog_alert).setTitle("Restore")
                 .setMessage(getString(R.string.restore_defaults))
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
