@@ -30,6 +30,8 @@ import android.text.Html;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -66,6 +68,8 @@ public class Spoofer extends Activity {
     private AlertDialog warnD;
     private AlertDialog.Builder resetDialog;
     private Button restoreBtn;
+    private AlertDialog.Builder aboutDialog;
+    private AlertDialog.Builder tipDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -184,8 +188,38 @@ public class Spoofer extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_spoofer, menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.activity_spoofer, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+            case R.id.menu_about:
+                aboutDialog();
+                return true;
+            case R.id.action_tip:
+                tipDialog();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void tipDialog() {
+        tipDialog = new AlertDialog.Builder(this);
+
+        tipDialog
+                .setIcon(android.R.drawable.ic_dialog_info).setTitle("Tips")
+                .setMessage("MacSpoofer v2.0")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        return;
+                    }
+                }).show();
     }
 
     public void onClickCheck(View v) {
@@ -327,4 +361,17 @@ public class Spoofer extends Activity {
                 }).show();
     }
 
+    private void aboutDialog() {
+        aboutDialog = new AlertDialog.Builder(this);
+
+        aboutDialog
+                .setIcon(android.R.drawable.ic_dialog_info).setTitle("About")
+                .setMessage("MacSpoofer v2.0")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        return;
+                    }
+                }).show();
+    }
 }
