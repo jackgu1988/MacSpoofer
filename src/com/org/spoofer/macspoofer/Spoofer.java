@@ -20,6 +20,7 @@ package com.org.spoofer.macspoofer;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -124,7 +125,7 @@ public class Spoofer extends Activity {
                     .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             iface_list.setAdapter(dataAdapter);
 
-            checkWlan();
+            checkWlan(true);
 
             iface_list.setOnItemSelectedListener(new OnItemSelectedListener() {
                 @Override
@@ -150,13 +151,14 @@ public class Spoofer extends Activity {
         }
     }
 
-    private boolean checkWlan() {
+    private boolean checkWlan(boolean set) {
         boolean exists = false;
 
         for (int i = 0; i < ifaces.size(); i++) {
             // Since wlan0 is a common name for the wireless interface
             if (ifaces.get(i).equals("wlan0")) {
-                iface_list.setSelection(i);
+                if (set)
+                    iface_list.setSelection(i);
                 exists = true;
             }
         }
@@ -238,10 +240,9 @@ public class Spoofer extends Activity {
 
     public void onClickCheck(View v) {
         if (checkBox.isChecked()) {
-            if (checkWlan() && cmd.getMacDir() != null) {
+            if (checkWlan(false) && cmd.getMacDir() != null)
                 warningDialogue(getString(R.string.warningMsg));
-                iface_list.setEnabled(false);
-            } else
+            else
                 noWlanDialog();
         } else {
             checkBox2.setEnabled(false);
@@ -282,26 +283,27 @@ public class Spoofer extends Activity {
 
         String textField = macField.getText().toString();
 
-        if (!checkBox.isChecked())
+        if (!checkBox.isChecked()) {
             cmd.changeMac(textField,
                     String.valueOf(iface_list.getSelectedItem()), 0, false, wifi);
-        else {
+
+            String currentMac = cmd.getCurrentMac(String.valueOf(iface_list
+                    .getSelectedItem()));
+
+            current_mac.setText("Current MAC: "
+                    + currentMac);
+
+            if (!currentMac.trim().equals(textField.trim()))
+                simpleAlert("The MAC address failed to change! Please try some different address.");
+        } else {
             if (!checkBox2.isChecked())
                 cmd.changeMac(textField,
                         "wlan0", 1, false, wifi);
             else
                 cmd.changeMac(textField,
                         "wlan0", 1, true, wifi);
+            checkWlanUp();
         }
-
-        String currentMac = cmd.getCurrentMac(String.valueOf(iface_list
-                .getSelectedItem()));
-
-        current_mac.setText("Current MAC: "
-                + currentMac);
-
-        if (!currentMac.trim().equals(textField.trim()))
-            simpleAlert("The MAC address failed to change! Please try some different address.");
     }
 
     private void rndNum() {
@@ -347,6 +349,8 @@ public class Spoofer extends Activity {
                             checkBox2.setEnabled(true);
                             checkBox2.setTextColor(Color.WHITE);
                             restoreBtn.setEnabled(true);
+                            iface_list.setEnabled(false);
+                            checkWlan(true);
                         } else {
                             checkBox.setChecked(false);
                             restoreBtn.setEnabled(false);
@@ -398,6 +402,11 @@ public class Spoofer extends Activity {
                             cmd.restoreMac();
                             wifi.setWifiEnabled(true);
                         }
+                        String currentMac = cmd.getCurrentMac(String.valueOf(iface_list
+                                .getSelectedItem()));
+
+                        current_mac.setText("Current MAC: "
+                                + currentMac);
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -421,4 +430,30 @@ public class Spoofer extends Activity {
                     }
                 }).show();
     }
+
+    public void checkWlanUp() {
+
+        Spoofer.this.runOnUiThread(new Runnable() {
+            public void run() {
+                ProgressDialog progDialog = ProgressDialog.show(Spoofer.this, "Please wait",
+                        "Applying your settings", true);
+                try {
+                    int counter = 0;
+                    while (wifi.getWifiState() != WifiManager.WIFI_STATE_ENABLED && counter < 36) {
+                        Thread.sleep(500);
+                        counter++;
+                    }
+                } catch (Exception e) {
+                }
+                progDialog.dismiss();
+
+                String currentMac = cmd.getCurrentMac(String.valueOf(iface_list
+                        .getSelectedItem()));
+
+                current_mac.setText("Current MAC: "
+                        + currentMac);
+            }
+        });
+    }
+
 }

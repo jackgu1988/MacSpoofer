@@ -99,11 +99,6 @@ public class CmdRunner {
         return null;
     }
 
-    // TODO
-    public void checkWlanUp() {
-        wifi.getWifiState();
-    }
-
     /**
      * Keeps a backup of the MAC address the first time the program runs
      * <p/>
