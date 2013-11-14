@@ -17,7 +17,6 @@
 
 package com.org.spoofer.macspoofer;
 
-import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 
 import com.stericson.RootTools.RootTools;
@@ -45,9 +44,8 @@ public class CmdRunner {
      * @param newMac     the new mac address
      * @param iface      the interface
      * @param methodUsed 0 if ifconfig method is used, 1 if MAC file method
-     * @param permanent  true if the original MAC is not restored after restarting WiFi
      */
-    public void changeMac(String newMac, String iface, int methodUsed, boolean permanent, WifiManager wifi) {
+    public void changeMac(String newMac, String iface, int methodUsed, WifiManager wifi) {
 
         this.wifi = wifi;
 
@@ -66,8 +64,6 @@ public class CmdRunner {
                 wifi.setWifiEnabled(false);
                 changeMac(newMac, macFile);
                 wifi.setWifiEnabled(true);
-                if (!permanent)
-                    restoreMac();
             }
         }
 

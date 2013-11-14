@@ -24,7 +24,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
-import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.text.Html;
@@ -285,7 +284,7 @@ public class Spoofer extends Activity {
 
         if (!checkBox.isChecked()) {
             cmd.changeMac(textField,
-                    String.valueOf(iface_list.getSelectedItem()), 0, false, wifi);
+                    String.valueOf(iface_list.getSelectedItem()), 0, wifi);
 
             String currentMac = cmd.getCurrentMac(String.valueOf(iface_list
                     .getSelectedItem()));
@@ -296,13 +295,15 @@ public class Spoofer extends Activity {
             if (!currentMac.trim().equals(textField.trim()))
                 simpleAlert("The MAC address failed to change! Please try some different address.");
         } else {
-            if (!checkBox2.isChecked())
+            if (!checkBox2.isChecked()) {
                 cmd.changeMac(textField,
-                        "wlan0", 1, false, wifi);
-            else
+                        "wlan0", 1, wifi);
+                checkWlanUp(true);
+            } else {
                 cmd.changeMac(textField,
-                        "wlan0", 1, true, wifi);
-            checkWlanUp();
+                        "wlan0", 1, wifi);
+                checkWlanUp(false);
+            }
         }
     }
 
@@ -394,7 +395,7 @@ public class Spoofer extends Activity {
                             cmd.restoreMac();
                             wifi.setWifiEnabled(true);
                         }
-                        checkWlanUp();
+                        checkWlanUp(false);
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -419,7 +420,7 @@ public class Spoofer extends Activity {
                 }).show();
     }
 
-    public void checkWlanUp() {
+    public void checkWlanUp(final boolean restoreMac) {
 
         final ProgressDialog progDialog = ProgressDialog.show(Spoofer.this, "Please wait",
                 "Applying your settings", true);
@@ -444,12 +445,16 @@ public class Spoofer extends Activity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            progDialog.dismiss();
                             String currentMac = cmd.getCurrentMac(String.valueOf(iface_list
                                     .getSelectedItem()));
 
                             current_mac.setText("Current MAC: "
                                     + currentMac);
+
+                            progDialog.dismiss();
+
+                            if (restoreMac)
+                                cmd.restoreMac();
                         }
                     });
                 } catch (final Exception ex) {
