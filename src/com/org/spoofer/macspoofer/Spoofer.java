@@ -323,14 +323,6 @@ public class Spoofer extends Activity {
         macField.setText(result);
     }
 
-    public String getMACAddress() {
-        WifiManager wifiMan = (WifiManager) this.getSystemService(
-                Context.WIFI_SERVICE);
-        WifiInfo wifiInf = wifiMan.getConnectionInfo();
-        String macAddr = wifiInf.getMacAddress();
-        return macAddr;
-    }
-
     public void warningDialogue(String msg) {
 
         warningDialog = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.WarningDialog));
@@ -402,11 +394,7 @@ public class Spoofer extends Activity {
                             cmd.restoreMac();
                             wifi.setWifiEnabled(true);
                         }
-                        String currentMac = cmd.getCurrentMac(String.valueOf(iface_list
-                                .getSelectedItem()));
-
-                        current_mac.setText("Current MAC: "
-                                + currentMac);
+                        checkWlanUp();
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -433,27 +421,41 @@ public class Spoofer extends Activity {
 
     public void checkWlanUp() {
 
-        Spoofer.this.runOnUiThread(new Runnable() {
+        final ProgressDialog progDialog = ProgressDialog.show(Spoofer.this, "Please wait",
+                "Applying your settings", true);
+
+        new Thread() {
+            @Override
             public void run() {
-                ProgressDialog progDialog = ProgressDialog.show(Spoofer.this, "Please wait",
-                        "Applying your settings", true);
-                try {
-                    int counter = 0;
-                    while (wifi.getWifiState() != WifiManager.WIFI_STATE_ENABLED && counter < 36) {
+
+                int counter = 0;
+                while (wifi.getWifiState() != WifiManager.WIFI_STATE_ENABLED && counter < 36) {
+                    try {
                         Thread.sleep(500);
-                        counter++;
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
+                    counter++;
                 }
-                progDialog.dismiss();
 
-                String currentMac = cmd.getCurrentMac(String.valueOf(iface_list
-                        .getSelectedItem()));
+                try {
 
-                current_mac.setText("Current MAC: "
-                        + currentMac);
+                    // code runs in a thread
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            progDialog.dismiss();
+                            String currentMac = cmd.getCurrentMac(String.valueOf(iface_list
+                                    .getSelectedItem()));
+
+                            current_mac.setText("Current MAC: "
+                                    + currentMac);
+                        }
+                    });
+                } catch (final Exception ex) {
+                }
             }
-        });
+        }.start();
     }
 
 }
