@@ -54,15 +54,12 @@ import java.util.Random;
 public class Spoofer extends Activity {
 
     private CmdRunner cmd = new CmdRunner();
-    private boolean correctMac = false;
     private ArrayList<String> ifaces = new ArrayList<String>();
     private CheckBox checkBox;
     private CheckBox checkBox2;
-    private TextView method;
     private EditText macField;
     private Spinner iface_list;
     private TextView current_mac;
-    private Button randomBtn;
     private CheckBox understand;
     private AlertDialog.Builder warningDialog;
     private AlertDialog warnD;
@@ -71,6 +68,7 @@ public class Spoofer extends Activity {
     private AlertDialog.Builder aboutDialog;
     private AlertDialog.Builder tipDialog;
     private WifiManager wifi;
+    private AlertDialog.Builder gplDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +79,6 @@ public class Spoofer extends Activity {
 
         macField = (EditText) findViewById(R.id.editText1);
         current_mac = (TextView) findViewById(R.id.current_mac);
-        randomBtn = (Button) findViewById(R.id.Random);
 
         if (!cmd.checkRoot())
             alert("You do not seem to have a rooted device.\n Exiting...");
@@ -218,9 +215,25 @@ public class Spoofer extends Activity {
             case R.id.action_tip:
                 tipDialog();
                 return true;
+            case R.id.menu_legal:
+                gplDialog();
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void gplDialog() {
+        gplDialog = new AlertDialog.Builder(this);
+
+        gplDialog
+                .setIcon(android.R.drawable.ic_dialog_info).setTitle("License")
+                .setMessage(getString(R.string.gpl))
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        return;
+                    }
+                }).show();
     }
 
     private void tipDialog() {
