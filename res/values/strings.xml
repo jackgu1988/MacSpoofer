@@ -21,7 +21,7 @@
     <string name="menu_credits">Credits</string>
     <string name="menu_legal">License</string>
     <string name="action_tip">Tips</string>
-    <string name="no_compat">This method is not compatible with your device (either wlan0 interface is not available or your device is not supported yet).</string>
+    <string name="no_compat">This method is not compatible with your device (either a supported network interface is not available or your device is not supported yet).</string>
     <string name="gpl"><![CDATA[Copyright © 2013 Jack Gurulian. License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.\n\nThis is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.\n\n(Source code: <https://github.com/jackgu1988/MacSpoofer>)]]></string>
 
 </resources>

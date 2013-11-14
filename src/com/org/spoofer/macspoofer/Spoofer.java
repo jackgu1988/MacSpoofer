@@ -69,6 +69,7 @@ public class Spoofer extends Activity {
     private AlertDialog.Builder tipDialog;
     private WifiManager wifi;
     private AlertDialog.Builder gplDialog;
+    private String defaultInterface = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,7 +153,8 @@ public class Spoofer extends Activity {
 
         for (int i = 0; i < ifaces.size(); i++) {
             // Since wlan0 is a common name for the wireless interface
-            if (ifaces.get(i).equals("wlan0")) {
+            if (ifaces.get(i).equals("wlan0") || ifaces.get(i).equals("ifb0")) {
+                defaultInterface = ifaces.get(i);
                 if (set)
                     iface_list.setSelection(i);
                 exists = true;
@@ -310,11 +312,11 @@ public class Spoofer extends Activity {
         } else {
             if (!checkBox2.isChecked()) {
                 cmd.changeMac(textField,
-                        "wlan0", 1, wifi);
+                        defaultInterface, 1, wifi);
                 checkWlanUp(true);
             } else {
                 cmd.changeMac(textField,
-                        "wlan0", 1, wifi);
+                        defaultInterface, 1, wifi);
                 checkWlanUp(false);
             }
         }

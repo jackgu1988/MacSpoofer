@@ -62,14 +62,14 @@ public class CmdRunner {
             String macFile = getMacDir();
             if (macFile != null) {
                 wifi.setWifiEnabled(false);
-                changeMac(newMac, macFile);
+                changeMacAddr(newMac, macFile);
                 wifi.setWifiEnabled(true);
             }
         }
 
     }
 
-    private void changeMac(String newMac, String file) {
+    private void changeMacAddr(String newMac, String file) {
         String command = "echo " + newMac.trim() + " > " + file;
 
         try {
