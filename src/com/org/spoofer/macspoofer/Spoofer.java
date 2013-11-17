@@ -82,13 +82,13 @@ public class Spoofer extends Activity {
         current_mac = (TextView) findViewById(R.id.current_mac);
 
         if (!cmd.checkRoot())
-            alert("You do not seem to have a rooted device.\n Exiting...");
+            alert(getString(R.string.no_root));
 
         else if (!cmd.checkBusybox())
-            alert("You do not seem to have busybox installed.\n Exiting...");
+            alert(getString(R.string.no_busybox));
 
         else if (!cmd.checkAccess())
-            alert("You seem to have denied root access.\n Exiting...");
+            alert(getString(R.string.no_permission));
 
         else {
             cmd.getRoot();
@@ -128,7 +128,7 @@ public class Spoofer extends Activity {
                 @Override
                 public void onItemSelected(AdapterView<?> parentView,
                                            View selectedItemView, int position, long id) {
-                    current_mac.setText("Current MAC: "
+                    current_mac.setText(getString(R.string.current_mac)
                             + cmd.getCurrentMac(String.valueOf(iface_list
                             .getSelectedItem())));
                 }
@@ -171,9 +171,9 @@ public class Spoofer extends Activity {
      */
     private void alert(String msg) {
         new AlertDialog.Builder(this)
-                .setIcon(android.R.drawable.ic_dialog_alert).setTitle("Error")
+                .setIcon(android.R.drawable.ic_dialog_alert).setTitle(getString(R.string.error))
                 .setMessage(msg)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         finish();
@@ -189,9 +189,9 @@ public class Spoofer extends Activity {
      */
     private void simpleAlert(String msg) {
         new AlertDialog.Builder(this)
-                .setIcon(android.R.drawable.ic_dialog_alert).setTitle("Error")
+                .setIcon(android.R.drawable.ic_dialog_alert).setTitle(getString(R.string.error))
                 .setMessage(msg)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
@@ -228,9 +228,9 @@ public class Spoofer extends Activity {
         gplDialog = new AlertDialog.Builder(this);
 
         gplDialog
-                .setIcon(android.R.drawable.ic_dialog_info).setTitle("License")
+                .setIcon(android.R.drawable.ic_dialog_info).setTitle(getString(R.string.license))
                 .setMessage(getString(R.string.gpl))
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         return;
@@ -242,9 +242,9 @@ public class Spoofer extends Activity {
         tipDialog = new AlertDialog.Builder(this);
 
         tipDialog
-                .setIcon(android.R.drawable.ic_dialog_info).setTitle("Tips")
-                .setMessage("MacSpoofer v2.0")
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setIcon(android.R.drawable.ic_dialog_info).setTitle(getString(R.string.tips))
+                .setMessage(getString(R.string.tip))
+                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         return;
@@ -271,9 +271,9 @@ public class Spoofer extends Activity {
         AlertDialog.Builder noWlan = new AlertDialog.Builder(this);
 
         noWlan
-                .setIcon(android.R.drawable.ic_dialog_alert).setTitle("Error!")
+                .setIcon(android.R.drawable.ic_dialog_alert).setTitle(getString(R.string.error))
                 .setMessage(getString(R.string.no_compat))
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         checkBox.setChecked(false);
@@ -285,7 +285,7 @@ public class Spoofer extends Activity {
         String pattern = "^([0-9A-Fa-f]{2}[:]){5}([0-9A-Fa-f]{2})$";
 
         if (!macField.getText().toString().matches(pattern)) {
-            simpleAlert("Wrong format provided!");
+            simpleAlert(getString(R.string.wrong_format));
         } else {
             changeMac();
         }
@@ -304,11 +304,11 @@ public class Spoofer extends Activity {
             String currentMac = cmd.getCurrentMac(String.valueOf(iface_list
                     .getSelectedItem()));
 
-            current_mac.setText("Current MAC: "
+            current_mac.setText(getString(R.string.current_mac)
                     + currentMac);
 
             if (!currentMac.trim().equals(textField.trim()))
-                simpleAlert("The MAC address failed to change! Please try some different address.");
+                simpleAlert(getString(R.string.spoof_failed));
         } else {
             if (!checkBox2.isChecked()) {
                 cmd.changeMac(textField,
@@ -348,9 +348,9 @@ public class Spoofer extends Activity {
 
         warningDialog
                 .setView(warnLayout)
-                .setIcon(android.R.drawable.ic_dialog_alert).setTitle("Warning!!!")
+                .setIcon(android.R.drawable.ic_dialog_alert).setTitle(getString(R.string.warning))
                 .setMessage(Html.fromHtml(msg))
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (understand.isChecked()) {
@@ -366,7 +366,7 @@ public class Spoofer extends Activity {
                         return;
                     }
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         checkBox.setChecked(false);
@@ -400,9 +400,9 @@ public class Spoofer extends Activity {
         resetDialog = new AlertDialog.Builder(this);
 
         resetDialog
-                .setIcon(android.R.drawable.ic_dialog_alert).setTitle("Restore")
+                .setIcon(android.R.drawable.ic_dialog_alert).setTitle(getString(R.string.restore_title))
                 .setMessage(getString(R.string.restore_defaults))
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (cmd.getMacDir() != null) {
@@ -413,7 +413,7 @@ public class Spoofer extends Activity {
                         checkWlanUp(false);
                     }
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         return;
@@ -425,9 +425,9 @@ public class Spoofer extends Activity {
         aboutDialog = new AlertDialog.Builder(this);
 
         aboutDialog
-                .setIcon(android.R.drawable.ic_dialog_info).setTitle("About")
-                .setMessage("MacSpoofer v2.0")
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setIcon(android.R.drawable.ic_dialog_info).setTitle(getString(R.string.about))
+                .setMessage(getString(R.string.about_text))
+                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         return;
@@ -437,8 +437,8 @@ public class Spoofer extends Activity {
 
     public void checkWlanUp(final boolean restoreMac) {
 
-        final ProgressDialog progDialog = ProgressDialog.show(Spoofer.this, "Please wait",
-                "Applying your settings", true);
+        final ProgressDialog progDialog = ProgressDialog.show(Spoofer.this, getString(R.string.wait),
+                getString(R.string.apply_settings), true);
 
         new Thread() {
             @Override
@@ -463,7 +463,7 @@ public class Spoofer extends Activity {
                             String currentMac = cmd.getCurrentMac(String.valueOf(iface_list
                                     .getSelectedItem()));
 
-                            current_mac.setText("Current MAC: "
+                            current_mac.setText(getString(R.string.current_mac)
                                     + currentMac);
 
                             progDialog.dismiss();
