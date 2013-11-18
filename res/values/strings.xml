@@ -11,7 +11,7 @@
     <string name="persistent">Persistent MAC address\n<i>(does not change after reboot)</i></string>
     <string name="restore">Restore Defaults</string>
     <string name="locked">Locked Wi-Fi compatibility\n<font fgcolor="#ffff0000"><i>(use at your own risk)</i></font></string>
-    <string name="advanced">Advanced</string>
+    <string name="advanced">Advanced*</string>
     <string name="hint">ex 00:11:22:33:44:55</string>
     <string name="method">Method used:</string>
     <string name="warningMsg">Before proceeding it is HIGHLY RECOMMENDED that you write down the REAL MAC ADDRESS of the interface. The application will try to remember it, but there is NO GUARANTEE THAT IT WILL!</string>
@@ -39,5 +39,6 @@
     <string name="no_permission">You seem to have denied root access.\nExiting…</string>
     <string name="warning">Warning!!!</string>
     <string name="restore_title">Restore</string>
+    <string name="star_explanation">* only tested on Samsung Galaxy S3 mini</string>
 
 </resources>
