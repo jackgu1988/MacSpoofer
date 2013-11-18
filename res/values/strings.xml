@@ -39,6 +39,6 @@
     <string name="no_permission">You seem to have denied root access.\nExiting…</string>
     <string name="warning">Warning!!!</string>
     <string name="restore_title">Restore</string>
-    <string name="star_explanation">* only tested on Samsung Galaxy S3 mini</string>
+    <string name="star_explanation">*only tested with Samsung Galaxy S3 mini. More devices to be supported in the near future.</string>
 
 </resources>
