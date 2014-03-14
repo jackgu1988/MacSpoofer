@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">MacSpoofer</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_about">About</string>
+    <string name="ok">OK</string>
+    <string name="random">Random</string>
+    <string name="iface">Interface</string>
+    <string name="mac">New MAC address</string>
+    <string name="persistent">Persistent MAC address\n<i>(does not change after reboot)</i></string>
+    <string name="restore">Restore Defaults</string>
+    <string name="locked">Locked Wi-Fi compatibility\n<font fgcolor="#ffff0000"><i>(use at your own risk)</i></font></string>
+    <string name="advanced">Advanced*</string>
+    <string name="hint">ex 00:11:22:33:44:55</string>
+    <string name="method">Method used:</string>
+    <string name="warningMsg">Before proceeding it is HIGHLY RECOMMENDED that you write down the REAL MAC ADDRESS of the interface. The application will try to remember it, but there is NO GUARANTEE THAT IT WILL!</string>
+    <string name="understand">I have written down my <font fgcolor="#ffff0000"><i>real</i></font> MAC Address</string>
+    <string name="restore_defaults">Reset MAC address to the default value?</string>
+    <string name="menu_credits">Credits</string>
+    <string name="menu_legal">License</string>
+    <string name="action_tip">Tips</string>
+    <string name="no_compat">This method is not compatible with your device (either a supported network interface is not available or your device is not supported yet).</string>
+    <string name="gpl"><![CDATA[Copyright © 2013 Jack Gurulian. License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.\n\nThis is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.\n\n(Source code: <https://github.com/jackgu1988/MacSpoofer>)]]></string>
+    <string name="tip">Make sure that you reset your MAC address to the default value before uninstalling the application.</string>
+    <string name="license">License</string>
+    <string name="about_text">MacSpoofer v2.0 ALPHA</string>
+    <string name="about">About</string>
+    <string name="wait">Please wait</string>
+    <string name="apply_settings">Applying your settings</string>
+    <string name="cancel">Cancel</string>
+    <string name="spoof_failed">The MAC address failed to change! Please try some different address.</string>
+    <string name="current_mac">Current MAC:\u0020</string>
+    <string name="wrong_format">Wrong format provided!</string>
+    <string name="error">Error!</string>
+    <string name="tips">Tips</string>
+    <string name="no_root">You do not seem to have a rooted device.\nExiting…</string>
+    <string name="no_busybox">You do not seem to have busybox installed.\nExiting…</string>
+    <string name="no_permission">You seem to have denied root access.\nExiting…</string>
+    <string name="warning">Warning!!!</string>
+    <string name="restore_title">Restore</string>
+    <string name="star_explanation">*only tested with Samsung Galaxy S3 mini. More devices to be supported in the near future.</string>
+
+</resources>

@@ -1,0 +1,24 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/menu_about"
+        android:orderInCategory="100"
+        android:title="@string/menu_about" />
+
+    <item
+        android:id="@+id/menu_credits"
+        android:orderInCategory="100"
+        android:title="@string/menu_credits" />
+
+    <item
+        android:id="@+id/menu_legal"
+        android:orderInCategory="100"
+        android:title="@string/menu_legal" />
+
+    <item
+        android:id="@+id/action_tip"
+        android:orderInCategory="100"
+        android:title="@string/action_tip"
+        android:showAsAction="ifRoom" />
+
+</menu>
