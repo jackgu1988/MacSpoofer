@@ -113,7 +113,7 @@ public class Spoofer extends Activity {
                         if (!intf.getDisplayName().equals("lo"))
                             ifaces.add(intf.getDisplayName());
                     }
-                } catch (SocketException e) {
+                } catch (SocketException ignored) {
                 }
 
                 iface_list = (Spinner) findViewById(R.id.iface_selector);
@@ -236,7 +236,6 @@ public class Spoofer extends Activity {
                 .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        return;
                     }
                 }).show();
     }
@@ -250,7 +249,6 @@ public class Spoofer extends Activity {
                 .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        return;
                     }
                 }).show();
     }
@@ -369,7 +367,6 @@ public class Spoofer extends Activity {
                             checkBox.setChecked(false);
                             restoreBtn.setEnabled(false);
                         }
-                        return;
                     }
                 })
                 .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -377,7 +374,6 @@ public class Spoofer extends Activity {
                     public void onClick(DialogInterface dialog, int which) {
                         checkBox.setChecked(false);
                         restoreBtn.setEnabled(false);
-                        return;
                     }
                 });
 
@@ -386,6 +382,7 @@ public class Spoofer extends Activity {
 
             @Override
             public void onShow(DialogInterface dialog) {
+                //noinspection ConstantConditions
                 warnD.getButton(BUTTON_POSITIVE).setEnabled(false);
             }
         });
@@ -396,8 +393,10 @@ public class Spoofer extends Activity {
 
     public void enableOK(View v) {
         if (!understand.isChecked())
+            //noinspection ConstantConditions
             warnD.getButton(BUTTON_POSITIVE).setEnabled(false);
         else
+            //noinspection ConstantConditions
             warnD.getButton(BUTTON_POSITIVE).setEnabled(true);
     }
 
@@ -422,7 +421,6 @@ public class Spoofer extends Activity {
                 .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        return;
                     }
                 }).show();
     }
@@ -436,7 +434,6 @@ public class Spoofer extends Activity {
                 .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        return;
                     }
                 }).show();
     }
@@ -478,7 +475,7 @@ public class Spoofer extends Activity {
                                 cmd.restoreMac();
                         }
                     });
-                } catch (final Exception ex) {
+                } catch (final Exception ignored) {
                 }
             }
         }.start();
