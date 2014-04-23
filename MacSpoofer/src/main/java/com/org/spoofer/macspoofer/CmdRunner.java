@@ -34,9 +34,9 @@ public class CmdRunner {
     private static final int BUFF_LEN = 64;
     private Process p;
     private DataOutputStream stdin;
-    private InputStream stdout;
+    protected InputStream stdout;
     private byte[] buffer = new byte[BUFF_LEN];
-    private WifiManager wifi;
+    protected WifiManager wifi;
 
     /**
      * Changes the mac address for a given interface
@@ -87,10 +87,12 @@ public class CmdRunner {
     public String getMacDir() {
         String[] filenames = {"/efs/wifi/.mac.info"};
 
-        for (int i = 0; i < filenames.length; i++) {
+        int i = 0;
+        while (i < filenames.length) {
             File file = new File(filenames[i]);
             if (file.exists())
                 return filenames[i];
+            i++;
         }
         return null;
     }
@@ -142,11 +144,7 @@ public class CmdRunner {
      * @return true if busybox is present
      */
     public boolean checkBusybox() {
-
-        if (RootTools.isBusyboxAvailable())
-            return true;
-        else
-            return false;
+        return RootTools.isBusyboxAvailable();
     }
 
     /**
@@ -156,10 +154,7 @@ public class CmdRunner {
      */
     public boolean checkRoot() {
 
-        if (RootTools.isRootAvailable())
-            return true;
-        else
-            return false;
+        return RootTools.isRootAvailable();
     }
 
     /**
@@ -169,10 +164,7 @@ public class CmdRunner {
      */
     public boolean checkAccess() {
 
-        if (RootTools.isAccessGiven())
-            return true;
-        else
-            return false;
+        return RootTools.isAccessGiven();
     }
 
     /**

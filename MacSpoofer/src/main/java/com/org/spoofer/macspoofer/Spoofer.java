@@ -19,7 +19,6 @@ package com.org.spoofer.macspoofer;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -48,6 +47,8 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Random;
 
+import static android.content.DialogInterface.BUTTON_POSITIVE;
+
 /**
  * @author jack gurulian
  */
@@ -61,14 +62,14 @@ public class Spoofer extends Activity {
     private Spinner iface_list;
     private TextView current_mac;
     private CheckBox understand;
-    private AlertDialog.Builder warningDialog;
+    protected AlertDialog.Builder warningDialog;
     private AlertDialog warnD;
-    private AlertDialog.Builder resetDialog;
+    protected AlertDialog.Builder resetDialog;
     private Button restoreBtn;
-    private AlertDialog.Builder aboutDialog;
-    private AlertDialog.Builder tipDialog;
+    protected AlertDialog.Builder aboutDialog;
+    protected AlertDialog.Builder tipDialog;
     private WifiManager wifi;
-    private AlertDialog.Builder gplDialog;
+    protected AlertDialog.Builder gplDialog;
     private String defaultInterface = "";
 
     @Override
@@ -87,64 +88,66 @@ public class Spoofer extends Activity {
         else if (!cmd.checkBusybox())
             alert(getString(R.string.no_busybox));
 
-        else if (!cmd.checkAccess())
-            alert(getString(R.string.no_permission));
-
         else {
-            cmd.getRoot();
+            if (!cmd.checkAccess())
+                alert(getString(R.string.no_permission));
 
-            cmd.saveMac();
+            else {
+                cmd.getRoot();
 
-            checkBox = (CheckBox) findViewById(R.id.checkBox);
-            checkBox2 = (CheckBox) findViewById(R.id.checkBox2);
+                cmd.saveMac();
 
-            checkBox2.setEnabled(false);
-            checkBox2.setTextColor(Color.GRAY);
+                checkBox = (CheckBox) findViewById(R.id.checkBox);
+                checkBox2 = (CheckBox) findViewById(R.id.checkBox2);
 
-            restoreBtn = (Button) findViewById(R.id.button);
-            restoreBtn.setEnabled(false);
+                checkBox2.setEnabled(false);
+                checkBox2.setTextColor(Color.GRAY);
 
-            try {
-                for (Enumeration<NetworkInterface> en = NetworkInterface
-                        .getNetworkInterfaces(); en.hasMoreElements(); ) {
-                    NetworkInterface intf = en.nextElement();
-                    if (!intf.getDisplayName().equals("lo"))
-                        ifaces.add(intf.getDisplayName());
+                restoreBtn = (Button) findViewById(R.id.button);
+                restoreBtn.setEnabled(false);
+
+                try {
+                    for (Enumeration<NetworkInterface> en = NetworkInterface
+                            .getNetworkInterfaces(); en.hasMoreElements(); ) {
+                        NetworkInterface intf = en.nextElement();
+                        if (!intf.getDisplayName().equals("lo"))
+                            ifaces.add(intf.getDisplayName());
+                    }
+                } catch (SocketException e) {
                 }
-            } catch (SocketException e) {
+
+                iface_list = (Spinner) findViewById(R.id.iface_selector);
+
+                ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
+                        android.R.layout.simple_spinner_item, ifaces);
+                dataAdapter
+                        .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                iface_list.setAdapter(dataAdapter);
+
+                checkWlan(true);
+
+                iface_list.setOnItemSelectedListener(new OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parentView,
+                                               View selectedItemView, int position, long id) {
+                        current_mac.setText(getString(R.string.current_mac)
+                                + cmd.getCurrentMac(String.valueOf(iface_list
+                                .getSelectedItem())));
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parentView) {
+                    }
+
+                });
+
+                final Button buttonRnd = (Button) findViewById(R.id.Random);
+                buttonRnd.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        rndNum();
+                    }
+                });
             }
-
-            iface_list = (Spinner) findViewById(R.id.iface_selector);
-
-            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
-                    android.R.layout.simple_spinner_item, ifaces);
-            dataAdapter
-                    .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            iface_list.setAdapter(dataAdapter);
-
-            checkWlan(true);
-
-            iface_list.setOnItemSelectedListener(new OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parentView,
-                                           View selectedItemView, int position, long id) {
-                    current_mac.setText(getString(R.string.current_mac)
-                            + cmd.getCurrentMac(String.valueOf(iface_list
-                            .getSelectedItem())));
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parentView) {
-                }
-
-            });
-
-            final Button buttonRnd = (Button) findViewById(R.id.Random);
-            buttonRnd.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    rndNum();
-                }
-            });
         }
     }
 
@@ -284,18 +287,20 @@ public class Spoofer extends Activity {
     public void checkInput(View v) {
         String pattern = "^([0-9A-Fa-f]{2}[:]){5}([0-9A-Fa-f]{2})$";
 
-        if (!macField.getText().toString().matches(pattern)) {
+        if (macField.getText() != null && !macField.getText().toString().matches(pattern))
             simpleAlert(getString(R.string.wrong_format));
-        } else {
+        else
             changeMac();
-        }
     }
 
     private void changeMac() {
         WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
         wifi.disconnect();
 
-        String textField = macField.getText().toString();
+        String textField = "";
+
+        if (macField.getText() != null)
+            textField = macField.getText().toString();
 
         if (!checkBox.isChecked()) {
             cmd.changeMac(textField,
@@ -326,7 +331,7 @@ public class Spoofer extends Activity {
         Random rand = new Random();
         String result = "";
         for (int i = 0; i < 6; i++) {
-            int myRandomNumber = rand.nextInt(0xff) + 0x00;
+            int myRandomNumber = rand.nextInt(0xff);
 
             if (myRandomNumber <= 15)
                 result += "0";
@@ -344,6 +349,7 @@ public class Spoofer extends Activity {
         warningDialog = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.WarningDialog));
         LayoutInflater warn = LayoutInflater.from(this);
         View warnLayout = warn.inflate(R.layout.checkbox, null);
+        assert warnLayout != null;
         understand = (CheckBox) warnLayout.findViewById(R.id.understand);
 
         warningDialog
@@ -380,7 +386,7 @@ public class Spoofer extends Activity {
 
             @Override
             public void onShow(DialogInterface dialog) {
-                warnD.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+                warnD.getButton(BUTTON_POSITIVE).setEnabled(false);
             }
         });
         warnD.setCancelable(false);
@@ -390,9 +396,9 @@ public class Spoofer extends Activity {
 
     public void enableOK(View v) {
         if (!understand.isChecked())
-            warnD.getButton(Dialog.BUTTON_POSITIVE).setEnabled(false);
+            warnD.getButton(BUTTON_POSITIVE).setEnabled(false);
         else
-            warnD.getButton(Dialog.BUTTON_POSITIVE).setEnabled(true);
+            warnD.getButton(BUTTON_POSITIVE).setEnabled(true);
     }
 
     public void resetDefaults(View v) {
