@@ -218,4 +218,30 @@ public class CmdRunner {
         }
     }
 
+    /**
+     * !HIGHLY EXPERIMENTAL FEATURE! sed command has only been tested on a Linux system. It may have
+     * a different behaviour on an Android device.
+     * <p/>
+     * nvram.txt contains the device's MAC address. It can be replaced using sed, it has not been
+     * tested yet though.
+     * <p/>
+     * Warning: modifying nvram.txt may cause issues on the device (ex. the device's language being
+     * reset to a default value).
+     * <p/>
+     * USE CAREFULLY!
+     *
+     * @param currentMac The MAC address which is currently being used
+     * @param newMac     The MAC address that will be set
+     * @param file       The file that contains the MAC address (nvram.txt)
+     */
+    public void changeMacWithSed(String currentMac, String newMac, String file) {
+        String command = "sed -i.bak s/" + currentMac.trim() + "/" + newMac.trim() + "/g " + file;
+
+        try {
+            stdin.writeBytes(command + "\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
