@@ -227,7 +227,7 @@ public class CmdRunner {
      * @param file       The file that contains the MAC address (nvram.txt)
      */
     public void changeMacWithSed(String currentMac, String newMac, String file) {
-        String command = "sed -i.bak s/" + currentMac.trim() + "/" + newMac.trim() + "/g " + file;
+        String command = "sed -i.tmpBk s/" + currentMac.trim() + "/" + newMac.trim() + "/g " + file;
 
         try {
             stdin.writeBytes(command + "\n");
@@ -246,7 +246,7 @@ public class CmdRunner {
      * @param file   The file that contains the MAC address (nvram.txt)
      */
     public void changeAnyMac(String newMac, String file) {
-        String command = "sed -i.bak s/..:..:..:..:..:../" + newMac.trim() + "/g " + file;
+        String command = "sed -i.tmpBk s/..:..:..:..:..:../" + newMac.trim() + "/g " + file;
 
         try {
             stdin.writeBytes(command + "\n");
