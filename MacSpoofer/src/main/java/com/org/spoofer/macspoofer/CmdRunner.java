@@ -236,4 +236,23 @@ public class CmdRunner {
         }
     }
 
+    /**
+     * !HIGHLY EXPERIMENTAL FEATURE! sed command has only been tested on a Linux system. It may have
+     * a different behaviour on an Android device.
+     * <p/>
+     * In case of a MAC address spoof failure, this method might help
+     *
+     * @param newMac The MAC address that will be set
+     * @param file   The file that contains the MAC address (nvram.txt)
+     */
+    public void changeAnyMac(String newMac, String file) {
+        String command = "sed -i.bak s/..:..:..:..:..:../" + newMac.trim() + "/g " + file;
+
+        try {
+            stdin.writeBytes(command + "\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
