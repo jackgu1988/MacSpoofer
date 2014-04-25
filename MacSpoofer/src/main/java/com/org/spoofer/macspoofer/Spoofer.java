@@ -58,6 +58,7 @@ public class Spoofer extends Activity {
     private ArrayList<String> ifaces = new ArrayList<String>();
     private CheckBox checkBox;
     private CheckBox checkBox2;
+    private CheckBox checkBox3;
     private EditText macField;
     private Spinner iface_list;
     private TextView current_mac;
@@ -99,6 +100,7 @@ public class Spoofer extends Activity {
 
                 checkBox = (CheckBox) findViewById(R.id.checkBox);
                 checkBox2 = (CheckBox) findViewById(R.id.checkBox2);
+                checkBox3 = (CheckBox) findViewById(R.id.checkBox3);
 
                 checkBox2.setEnabled(false);
                 checkBox2.setTextColor(Color.GRAY);
@@ -256,12 +258,26 @@ public class Spoofer extends Activity {
     public void onClickCheck(View v) {
         if (checkBox.isChecked()) {
             if (checkWlan(false) && cmd.getMacDir() != null)
-                warningDialogue(getString(R.string.warningMsg));
+                warningDialogue(getString(R.string.warningMsg), true);
             else
                 noWlanDialog();
         } else {
             checkBox2.setEnabled(false);
             checkBox2.setTextColor(Color.GRAY);
+            restoreBtn.setEnabled(false);
+            iface_list.setEnabled(true);
+        }
+    }
+
+    public void onClickExpCheck(View v) {
+        if (checkBox3.isChecked()) {
+            if (checkWlan(false) && cmd.getMacDir() != null)
+                warningDialogue(getString(R.string.warningMsg2), false);
+            else
+                noWlanDialog();
+        } else {
+            checkBox3.setEnabled(false);
+            checkBox3.setTextColor(Color.GRAY);
             restoreBtn.setEnabled(false);
             iface_list.setEnabled(true);
         }
@@ -278,6 +294,7 @@ public class Spoofer extends Activity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         checkBox.setChecked(false);
+                        checkBox3.setChecked(false);
                     }
                 }).show();
     }
@@ -342,7 +359,7 @@ public class Spoofer extends Activity {
         macField.setText(result);
     }
 
-    public void warningDialogue(String msg) {
+    public void warningDialogue(String msg, final boolean advanced) {
 
         warningDialog = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.WarningDialog));
         LayoutInflater warn = LayoutInflater.from(this);
@@ -357,23 +374,29 @@ public class Spoofer extends Activity {
                 .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if (understand.isChecked()) {
+                        if (understand.isChecked() && advanced) {
                             checkBox2.setEnabled(true);
                             checkBox2.setTextColor(Color.WHITE);
                             restoreBtn.setEnabled(true);
                             iface_list.setEnabled(false);
                             checkWlan(true);
                         } else {
-                            checkBox.setChecked(false);
-                            restoreBtn.setEnabled(false);
+                            if (advanced) {
+                                checkBox.setChecked(false);
+                                restoreBtn.setEnabled(false);
+                            } else
+                                checkBox3.setChecked(false);
                         }
                     }
                 })
                 .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        checkBox.setChecked(false);
-                        restoreBtn.setEnabled(false);
+                        if (advanced) {
+                            checkBox.setChecked(false);
+                            restoreBtn.setEnabled(false);
+                        } else
+                            checkBox3.setChecked(false);
                     }
                 });
 

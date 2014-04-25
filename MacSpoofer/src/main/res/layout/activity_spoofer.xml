@@ -205,6 +205,7 @@
         android:id="@+id/checkBox3"
         android:layout_alignTop="@+id/imageView4"
         android:checked="false"
-        android:layout_toLeftOf="@+id/imageView" />
+        android:layout_toLeftOf="@+id/imageView"
+        android:onClick="onClickExpCheck" />
 
 </RelativeLayout>
